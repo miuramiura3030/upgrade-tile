@@ -22,10 +22,10 @@ resource_types:
     tag: latest-final
 
 resources:
-- name: pcf-pipelines
+- name: upgrade-tile
   type: git
   source:
-    uri: git@github.com:mhtike/pcf-pipelines.git
+    uri: git@github.com:mhtike/upgrade-tile.git
     branch: master
     private_key: {{git_private_key}}
 
@@ -57,7 +57,7 @@ jobs:
 - name: upload-and-stage-tile
   plan:
   - aggregate:
-    - get: pcf-pipelines
+    - get: upgrade-tile
     - get: pivnet-product
       resource: tile
       passed: [regulator]
@@ -67,7 +67,7 @@ jobs:
         - {{product_globs}}
 
   - task: wait-opsman-clear
-    file: pcf-pipelines/tasks/wait-opsman-clear/task.yml
+    file: upgrade-tile/tasks/wait-opsman-clear/task.yml
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
@@ -76,7 +76,7 @@ jobs:
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
 
   - task: upload-tile-and-stemcell
-    file: pcf-pipelines/tasks/upload-product-and-stemcell/task.yml
+    file: upgrade-tile/tasks/upload-product-and-stemcell/task.yml
     params:
       IAAS: {{iaas_type}}
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
@@ -89,7 +89,7 @@ jobs:
       OM_IP: ""
 
   - task: stage-tile
-    file: pcf-pipelines/tasks/stage-product/task.yml
+    file: upgrade-tile/tasks/stage-product/task.yml
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
@@ -98,7 +98,7 @@ jobs:
       OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
 
   - task: toggle-errands
-    file: pcf-pipelines/tasks/toggle-errands/task.yml
+    file: upgrade-tile/tasks/toggle-errands/task.yml
     params:
       ENABLE_ERRANDS: {{enable_errands}}
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
@@ -110,7 +110,7 @@ jobs:
 - name: apply-changes
   plan:
   - aggregate:
-    - get: pcf-pipelines
+    - get: upgrade-tile
     - get: pivnet-product
       resource: tile
       passed: [ upload-and-stage-tile ]
@@ -118,7 +118,7 @@ jobs:
       params:
         globs: [ ]
   - task: apply-changes
-    file: pcf-pipelines/tasks/apply-changes/task.yml
+    file: upgrade-tile/tasks/apply-changes/task.yml
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
@@ -129,9 +129,9 @@ jobs:
 - name: delete-unused-products
   plan:
   - aggregate:
-    - get: pcf-pipelines
+    - get: upgrade-tile
   - task: delete-unused-products
-    file: pcf-pipelines/tasks/delete-unused-products/task.yml
+    file: upgrade-tile/tasks/delete-unused-products/task.yml
     params:
       OPSMAN_CLIENT_ID: {{opsman_client_id}}
       OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
