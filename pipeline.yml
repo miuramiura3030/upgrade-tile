@@ -25,7 +25,7 @@ resources:
 - name: upgrade-tile
   type: git
   source:
-    uri: git@github.com:mhtike/upgrade-tile.git
+    uri: git@github.com:miuramiura3030/upgrade-tile.git
     branch: master
     private_key: {{git_private_key}}
 
@@ -37,17 +37,17 @@ resources:
     product_version: {{product_version_regex}}
     sort_by: semver
 
-- name: schedule
+- name: schedule #いつからいつまで
   type: time
   source:
     interval: 30m
-    start: "12:00 AM"
+    start: "12:00 AM" #これは夜中の１２時をさす。
     stop: "11:59 PM"
-    location: America/Los_Angeles
-    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    location: Asia/Tokyo
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday] #不要な曜日は削除
 
 jobs:
-- name: regulator
+- name: regulator #新しいファイルができていないか確認する探し続ける者
   plan:
   - get: schedule
     trigger: true
@@ -60,7 +60,7 @@ jobs:
     - get: upgrade-tile
     - get: pivnet-product
       resource: tile
-      passed: [regulator]
+      passed: [regulator] #次の処理が終わっていることがじょうけん
       trigger: true
       params:
         globs:
