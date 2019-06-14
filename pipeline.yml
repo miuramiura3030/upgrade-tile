@@ -47,7 +47,7 @@ resources:
     days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
 
 jobs:
-- name: regulator 
+- name: regulator
   plan:
   - get: schedule
     trigger: true
@@ -65,15 +65,15 @@ jobs:
       params:
         globs:
         - {{product_globs}}
-
-  - task: wait-opsman-clear
-    file: upgrade-tile/tasks/wait-opsman-clear/task.yml
-    params:
-      OPSMAN_CLIENT_ID: {{opsman_client_id}}
-      OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
-      OPSMAN_USERNAME: {{opsman_admin_username}}
-      OPSMAN_PASSWORD: {{opsman_admin_password}}
-      OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
+  #
+  # - task: wait-opsman-clear
+  #   file: upgrade-tile/tasks/wait-opsman-clear/task.yml
+  #   params:
+  #     OPSMAN_CLIENT_ID: {{opsman_client_id}}
+  #     OPSMAN_CLIENT_SECRET: {{opsman_client_secret}}
+  #     OPSMAN_USERNAME: {{opsman_admin_username}}
+  #     OPSMAN_PASSWORD: {{opsman_admin_password}}
+  #     OPSMAN_DOMAIN_OR_IP_ADDRESS: {{opsman_domain_or_ip_address}}
 
   - task: upload-tile-and-stemcell
     file: upgrade-tile/tasks/upload-product-and-stemcell/task.yml
