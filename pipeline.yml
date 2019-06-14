@@ -37,17 +37,17 @@ resources:
     product_version: {{product_version_regex}}
     sort_by: semver
 
-- name: schedule #いつからいつまで
+- name: schedule
   type: time
   source:
     interval: 30m
-    start: "12:00 AM" #これは夜中の１２時をさす。
+    start: "12:00 AM"
     stop: "11:59 PM"
     location: Asia/Tokyo
-    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday] #不要な曜日は削除
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
 
 jobs:
-- name: regulator #新しいファイルができていないか確認する探し続ける者
+- name: regulator 
   plan:
   - get: schedule
     trigger: true
@@ -60,7 +60,7 @@ jobs:
     - get: upgrade-tile
     - get: pivnet-product
       resource: tile
-      passed: [regulator] #次の処理が終わっていることがじょうけん
+      passed: [regulator]
       trigger: true
       params:
         globs:
