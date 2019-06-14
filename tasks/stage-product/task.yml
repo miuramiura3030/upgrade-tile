@@ -22,7 +22,7 @@ image_resource:
 
 
 inputs:
-  - name: pcf-pipelines
+  - name: upgrade-tile
   - name: pivnet-product
 
 params:
@@ -33,4 +33,4 @@ params:
   OPSMAN_DOMAIN_OR_IP_ADDRESS:
 
 run:
-  path: pcf-pipelines/tasks/stage-product/task.sh
+  path: upgrade-tile/tasks/stage-product/task.sh

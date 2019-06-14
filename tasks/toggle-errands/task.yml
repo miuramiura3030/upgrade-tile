@@ -8,7 +8,7 @@ image_resource:
 
 
 inputs:
-- name: pcf-pipelines
+- name: upgrade-tile
 - name: pivnet-product
 
 params:
@@ -20,4 +20,4 @@ params:
   OPSMAN_DOMAIN_OR_IP_ADDRESS:
 
 run:
-  path: pcf-pipelines/tasks/toggle-errands/task.sh
+  path: upgrade-tile/tasks/toggle-errands/task.sh

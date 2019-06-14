@@ -22,7 +22,7 @@ image_resource:
 
 
 inputs:
-  - name: pcf-pipelines
+  - name: upgrade-tile
 
 params:
   OPSMAN_CLIENT_ID:
@@ -32,4 +32,4 @@ params:
   OPSMAN_DOMAIN_OR_IP_ADDRESS:
 
 run:
-  path: pcf-pipelines/tasks/delete-unused-products/task.sh
+  path: upgrade-tile/tasks/delete-unused-products/task.sh
